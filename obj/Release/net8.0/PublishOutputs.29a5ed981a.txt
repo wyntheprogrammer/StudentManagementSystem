@@ -1,0 +1,7 @@
+C:\Users\JPBACOLOD\StudentManagementSystem\bin\Release\net8.0\publish\StudentManagementSystem.exe
+C:\Users\JPBACOLOD\StudentManagementSystem\bin\Release\net8.0\publish\appsettings.Development.json
+C:\Users\JPBACOLOD\StudentManagementSystem\bin\Release\net8.0\publish\appsettings.json
+C:\Users\JPBACOLOD\StudentManagementSystem\bin\Release\net8.0\publish\StudentManagementSystem.dll
+C:\Users\JPBACOLOD\StudentManagementSystem\bin\Release\net8.0\publish\StudentManagementSystem.deps.json
+C:\Users\JPBACOLOD\StudentManagementSystem\bin\Release\net8.0\publish\StudentManagementSystem.runtimeconfig.json
+C:\Users\JPBACOLOD\StudentManagementSystem\bin\Release\net8.0\publish\StudentManagementSystem.pdb

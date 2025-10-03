@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StudentManagementSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/StudentManagementSystem.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        
+    </header>
+
+    <div class="d-flex flex-row">
+    
+        <div class="container-fluid">
+            <div class="row flex-nowrap">
+                <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+                    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                            <span class="fs-5 d-none d-sm-inline">Student MS</span>
+                        </a>
+                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                            <li class="nav-item">
+                                <a class="nav-link align-middle px-0 text-white" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Students" asp-action="Index">
+                                    <i class="fs-4 bi-person-badge"></i> <span class="ms-1 d-none d-sm-inline">Student</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Courses" asp-action="Index">
+                                    <i class="fs-4 bi-journal-bookmark"></i> <span class="ms-1 d-none d-sm-inline">Courses</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Enrollments" asp-action="Index">
+                                    <i class="fs-4 bi-person-plus"></i> <span class="ms-1 d-none d-sm-inline">Enrollment</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Marks" asp-action="Index">
+                                    <i class="fs-4 bi-clipboard-data"></i> <span class="ms-1 d-none d-sm-inline">Marks</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Users" asp-action="Index">
+                                    <i class="fs-4 bi-people-fill"></i> <span class="ms-1 d-none d-sm-inline">Users</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col py-3" style="background-color: #EAE8E7">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+    
+    </div>
+   
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+        
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
