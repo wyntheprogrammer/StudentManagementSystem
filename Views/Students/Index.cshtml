@@ -1,32 +1,60 @@
+@model List<Student>
+
 <h2 class="m-5">Students</h2>
 
 <div class="d-flex flex-column gap-4 m-5">
 
-    <div class="d-flex flex-row justify-content-between">
-        <div class="form-group" style="width: 50%">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @* Search Container *@
+    <form asp-controller="Students" asp-action="Search" method="get" class="d-flex flex-row justify-content-between">
+         <div class="form-group" style="width: 50%">
             <input type="text" name="search" class="form-control" placeholder="Search by student"/>
         </div>
 
         <div class="form-group" style="width: 35%">
             <select class="form-select" id="gender" name="gender">
+                <option value="">Search by gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
             </select>
         </div>
 
         <div class="bg-white d-flex justify-content-center" style="width: 10%">
-            <button type="button" class="bg-white border-0">            
+            <button type="submit" class="bg-white border-0">            
                 <i class="bi bi-search w-auto"></i>  Search
             </button>
         </div>
-    </div>
+    </form>
 
-    <button type="button" class="btn btn-primary" style="width:fit-content">
+
+
+
+    @* Add Button *@
+    <button type="button" class="btn btn-primary" id="openAddModal" style="width:fit-content">
         <i class="bi bi-plus"></i> Add New Student
     </button>
 
-    <table class="table table-bordered table-striped bg-white">
-        <thead>
+
+    
+
+    @* Students table *@
+    <div class="d-flex flex-column align-items-center">
+         <table class="table table-bordered table-striped bg-white">
+             <thead>
             <tr>
                 <th>ID</th>
                 <th>Image</th>
@@ -39,30 +67,223 @@
                 <th>Enrolled In</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
+                @if (Model !=null && Model.Any())
+                {
+                    @foreach (var student in Model) {
+                        <tr>
+                            <td>@student.Student_Id</td>
+                            <td>@student.Image</td>
+                            <td>@student.Name</td>
+                            <td>@student.Birthday</td>
+                            <td>@student.Gender</td>
+                            <td>@student.Address</td>
+                            <td>@student.Phone</td>
+                            <td>@student.Email</td>
+                            <td class="d-flex justify-content-center"><a href="#">view</a></td>
+                            <td class="text-center">
+                                <button type="button" 
+                                        class="btn btn-primary openEditModal" 
+                                        data-id="@student.Student_Id">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button type="button"  
+                                    asp-action="Delete" asp-route-id="@student.Student_Id"
+                                    class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                            </td>
+                        </tr>
+                    }
+                } else 
+                {
+                 <tr>
+                    <td colspan="11" class="text-center text-muted">No Student found.</td>
+                 </tr>   
+                }
+            </tbody>
+        </table>
+    
+        <nav aria-label="Student Pagination">
+            <ul class="pagination">
+                <li class="page-item @(ViewBag.Window == 1 ? "disabled" : "")">
+                    <a class="page-link" 
+                        asp-action="Search" 
+                        asp-route-page="@((ViewBag.StartPage - 5) > 0 ? ViewBag.StartPage - 5 : 1)" 
+                        asp-route-window="@(ViewBag.Window - 1)"
+                        asp-route-search="@ViewBag.Search"
+                        asp-route-gender="@ViewBag.Gender">
+                        Previous
+                    </a>
+                </li>
+
+                @for (int i = ViewBag.StartPage; i <= ViewBag.EndPage; i++)
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                        <a class="page-link"
+                            asp-action="Search" 
+                            asp-route-page="@i"
+                            asp-route-window="@ViewBag.Window"
+                            asp-route-search="@ViewBag.Search"
+                            asp-route-gender="@ViewBag.Gender">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @(ViewBag.EndPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" 
+                        asp-action="Search" 
+                        asp-route-page="@((ViewBag.EndPage + 1) <= ViewBag.TotalPages ? ViewBag.EndPage + 1 : ViewBag.TotalPages)" 
+                        asp-route-window="@(ViewBag.Window + 1)"
+                        asp-route-search="@ViewBag.Search"
+                        asp-route-gender="@ViewBag.Gender">
+                        Next
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+
+
+    </div>
+
+
+
+    @* Enrolled in table *@
+    <div class="d-flex flex-column align-items-center">
+         <table class="table table-bordered table-striped bg-white">
+             <thead>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="text-center">
-                    <a type="button" 
-                          class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-                    <button type="button"  
-                        class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
-                </td>
+                <th>Enrollment ID</th>
+                <th>Course</th>
+                <th>Mark</th>
+                <th>Actions</th>
             </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">
+                        <a type="button" 
+                            asp-action="" asp-route-id=""
+                                class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>
+                                Set Mark
+                        </a>
+                    </td>                    
+                </tr>
+                
+            </tbody>
+        </table>
+    
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+
+
+
+    <div class="d-flex flex-row justify-content-between">
+
+        <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
+            <i class="fs-4 bi-person-badge"></i> 
+            <div>Total Students</div>
+            <div>0</div>
+        </div>
+
+        <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
+            <i class="fs-4 bi-person-lines-fill"></i> 
+            <div>Average Age</div>
+            <div>0</div>
+        </div>
+
+        <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
+            <div>
+                <i class="fs-4 bi-gender-male"></i> 
+                <i class="fs-4 bi-gender-female"></i>
+            </div> 
+            <div>Gender Distribution</div>
+            <div>0</div>
+        </div>
+
+    </div>
+
 </div>
 
 
 
+@* Add Modal *@
+<div id="addModalContainer"></div>
+<div id="editModalContainer"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const button = document.getElementById("openAddModal");
+        const container = document.getElementById("addModalContainer");
+
+        button.addEventListener("click", function () {
+            fetch("/Students/AddModal")
+                .then(response => response.text())
+                .then(html => {
+                    container.innerHTML = html;
+                    const modal = document.getElementById("addModal");
+                    if (modal) {
+                        // Bootstrap 5 modal
+                        const modalInstance = new bootstrap.Modal(modal);
+                        modalInstance.show();
+                    }
+                })
+                .catch(error => {
+                    console.error("Error loading modal:", error);
+                });
+            });
+        });
+</script>
+
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".openEditModal");
+        const container = document.getElementById("editModalContainer");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function () {
+                const studentId = this.getAttribute("data-id");
+
+                fetch(`/Students/EditModal?id=${studentId}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                        const modal = document.getElementById("editModal");
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error loading modal:", error);
+                    });
+            });
+        });
+    });
+</script>
 
 
