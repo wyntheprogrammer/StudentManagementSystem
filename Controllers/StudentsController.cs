@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -40,39 +41,71 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        // public IActionResult Index(int page = 1, int pageSize = 5, int window = 1)
-        // {
-        //     var students = _context.Students
-        //         .OrderBy(s => s.Student_Id)
-        //         .Skip((page - 1) * pageSize)
-        //         .Take(pageSize)
-        //         .ToList();
-
-        //     int totalStudents = _context.Students.Count();
-        //     int totalPages = (int)Math.Ceiling((double)totalStudents / pageSize);
-
-        //     int windowSize = 5;
-        //     int startPage = ((window - 1) * windowSize) + 1;
-        //     int endPage = Math.Min(startPage + windowSize - 1, totalPages);
-
-        //     ViewBag.CurrentPage = page;
-        //     ViewBag.TotalPages = totalPages;
-        //     ViewBag.StartPage = startPage;
-        //     ViewBag.EndPage = endPage;
-        //     ViewBag.Window = window;
-
-        //     Console.WriteLine($"Student count: {students.Count}"); // Debug line
-        //     Console.WriteLine($"Loading page {page} with page size {pageSize}");
-
-        //     return View(students);
-        // }
-
 
         public IActionResult Index()
         {
             return RedirectToAction("Search");
         }
 
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Student Demograpics Modal /////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+        private void TotalStudent()
+        {
+            int studentCount = _context.Students.Count();
+            ViewBag.StudentCount = studentCount;
+        }
+
+
+        private void AverageAge()
+        {
+            var today = DateTime.Today;
+
+            var averageAge = _context.Students
+                .Select(s => today.Year - s.Birthday.Year - (s.Birthday > today.AddYears(-(today.Year - s.Birthday.Year)) ? 1 : 0))
+                .Average();
+
+            ViewBag.AverageAge = Math.Round(averageAge, 2);
+        }
+
+
+        private void TotalMale()
+        {
+            int totalStudents = _context.Students.Count();
+            int totalMale = _context.Students.Count(s => s.Gender == "Male");
+
+            double MalePercentage = totalStudents > 0
+                ? ((double)totalMale / totalStudents) * 100
+                : 0;
+
+            ViewBag.MalePercentage = Math.Round(MalePercentage, 2);
+        }
+
+
+        private void TotalFemale()
+        {
+             int totalStudents = _context.Students.Count();
+            int totalMale = _context.Students.Count(s => s.Gender == "Male");
+
+            double FemalePercentage = totalStudents > 0
+                ? ((double)totalMale / totalStudents) * 100
+                : 0;
+
+            ViewBag.FemalePercentage = Math.Round(FemalePercentage, 2);
+        }
+
+
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Student Search Modal ////////////////////////////////// 
+        ////////////////////////////////////////////////////////////////////////////////////////
 
         [HttpGet]
         public IActionResult Search(string search, string gender, int page = 1, int pageSize = 5, int window = 1)
@@ -112,10 +145,22 @@ namespace StudentManagementSystem.Controllers
             ViewBag.Gender = gender;
 
 
+            TotalStudent();
+            AverageAge();
+            TotalMale();
+            TotalFemale();
+
             return View("Index", pagedStudents); // or return to a SearchResults view
         }
 
 
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Student Add Modal ////////////////////////////////// 
+        ////////////////////////////////////////////////////////////////////////////////////////
         public IActionResult AddModal()
         {
             return View();
@@ -139,6 +184,11 @@ namespace StudentManagementSystem.Controllers
         }
 
 
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Student Edit Modal ////////////////////////////////// 
+        ////////////////////////////////////////////////////////////////////////////////////////
         [HttpGet]
         public IActionResult EditModal(int id)
         {
@@ -148,8 +198,70 @@ namespace StudentManagementSystem.Controllers
                 return NotFound();
             }
 
-            return PartialView("EditModal", student); // or your modal view name
+            return PartialView("EditModal", student);
         }
+
+
+        [HttpPost]
+        public IActionResult EditStudent(Student student)
+        {
+            var existingStudent = _context.Students.FirstOrDefault(s => s.Student_Id == student.Student_Id);
+            if (existingStudent == null)
+            {
+                TempData["ErrorMessage"] = "Failed to update student. Please check the form for errors.";
+                return NotFound();
+            }
+
+            existingStudent.Name = student.Name;
+            existingStudent.Birthday = student.Birthday;
+            existingStudent.Gender = student.Gender;
+            existingStudent.Address = student.Address;
+            existingStudent.Phone = student.Phone;
+            existingStudent.Email = student.Email;
+            existingStudent.Image = student.Image;
+
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Student updated successfully!";
+            return RedirectToAction("Search");
+        }
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Student Delete Modal ////////////////////////////////// 
+        ////////////////////////////////////////////////////////////////////////////////////////
+        [HttpGet]
+        public IActionResult DeleteModal(int id)
+        {
+            var student = _context.Students.FirstOrDefault(s => s.Student_Id == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("DeleteModal", student);
+        }
+
+
+        [HttpPost]
+        public IActionResult DeleteStudent(Student student)
+        {
+            var existingStudent = _context.Students.FirstOrDefault(s => s.Student_Id == student.Student_Id);
+            if (existingStudent == null)
+            {
+                TempData["ErrorMessage"] = "Failed to delete student. Please check the form for errors.";
+                return NotFound();
+            }
+
+            _context.Students.Remove(existingStudent);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Student deleted successfully!";
+            return RedirectToAction("Search"); // Or return a partial view if using AJAX
+        }
+
+
 
 
 

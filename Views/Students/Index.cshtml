@@ -64,7 +64,7 @@
                 <th>Address</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th>Enrolled In</th>
+                <th style="width: 100px">Enrolled In</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -76,21 +76,23 @@
                             <td>@student.Student_Id</td>
                             <td>@student.Image</td>
                             <td>@student.Name</td>
-                            <td>@student.Birthday</td>
+                            <td>@student.Birthday.ToString("MMMM dd, yyyy")</td>
                             <td>@student.Gender</td>
                             <td>@student.Address</td>
                             <td>@student.Phone</td>
                             <td>@student.Email</td>
-                            <td class="d-flex justify-content-center"><a href="#">view</a></td>
+                            <td class="text-center"><a href="#">view</a></td>
                             <td class="text-center">
                                 <button type="button" 
-                                        class="btn btn-primary openEditModal" 
+                                        class="btn btn-primary m-1 openEditModal" 
                                         data-id="@student.Student_Id">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <button type="button"  
-                                    asp-action="Delete" asp-route-id="@student.Student_Id"
-                                    class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                    data-id="@student.Student_Id"
+                                    class="btn btn-danger openDeleteModal">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
                             </td>
                         </tr>
                     }
@@ -200,19 +202,19 @@
 
 
 
-
+    @* Student demogarphics *@
     <div class="d-flex flex-row justify-content-between">
 
         <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
             <i class="fs-4 bi-person-badge"></i> 
             <div>Total Students</div>
-            <div>0</div>
+            <div>@ViewBag.StudentCount</div>
         </div>
 
         <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
             <i class="fs-4 bi-person-lines-fill"></i> 
             <div>Average Age</div>
-            <div>0</div>
+            <div>@ViewBag.AverageAge</div>
         </div>
 
         <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
@@ -221,7 +223,10 @@
                 <i class="fs-4 bi-gender-female"></i>
             </div> 
             <div>Gender Distribution</div>
-            <div>0</div>
+            <div >
+                <i class="fs-4 bi-gender-male"></i> @ViewBag.MalePercentage %
+                <i class="fs-4 bi-gender-female"></i> @ViewBag.FemalePercentage %
+            </div>
         </div>
 
     </div>
@@ -230,9 +235,11 @@
 
 
 
+
+
+
 @* Add Modal *@
 <div id="addModalContainer"></div>
-<div id="editModalContainer"></div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -258,6 +265,9 @@
         });
 </script>
 
+
+@* Edit Modal *@
+<div id="editModalContainer"></div>
 
 <script>
    document.addEventListener("DOMContentLoaded", function () {
@@ -285,5 +295,37 @@
         });
     });
 </script>
+
+
+@* Delete Modal *@
+<div id="deleteModalContainer"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".openDeleteModal");
+        const container = document.getElementById("deleteModalContainer");
+
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const studentId = this.getAttribute("data-id");
+
+                fetch(`/Students/DeleteModal?id=${studentId}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                        const modal = document.getElementById("deleteModal");
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error loading delete modal:", error);
+                    });
+            });
+        });
+    });
+</script>
+
 
 
