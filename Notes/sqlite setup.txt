@@ -1,0 +1,64 @@
+Step-by-Step: Download the Correct SQLite CLI
+Go to the official SQLite download page 👉 https://www.sqlite.org/download.html
+
+Scroll to “Precompiled Binaries for Windows”
+
+Download this ZIP file:
+
+sqlite-tools-win32-x86-*.zip (It contains sqlite3.exe, sqldiff.exe, and sqlite3_analyzer.exe)
+
+Extract the ZIP file
+
+You’ll find sqlite3.exe inside
+
+(Optional) Add it to your system PATH
+
+So you can run sqlite3 from any terminal window
+
+
+
+cd C:\Your\Preferred\Folder
+
+
+sqlite3 student.db
+
+
+CREATE TABLE Student (
+    Id TEXT PRIMARY KEY,         -- Guid stored as TEXT
+    Name TEXT NOT NULL,
+    Email TEXT NOT NULL,
+    Phone TEXT,
+    Subscribed INTEGER NOT NULL  -- Boolean stored as 0 or 1
+);
+
+
+INSERT INTO Student (Id, Name, Email, Phone, Subscribed)
+VALUES ('550e8400-e29b-41d4-a716-446655440000', 'Juan Dela Cruz', 'juan@example.com', '09171234567', 1);
+
+
+
+
+
+
+
+
+
+
+
+
+--directory of database
+cd C:\Users\JPBACOLOD\StudentManagementSystem\Database
+
+--create db
+sqlite3 studentsm.db
+.database
+
+
+-create table
+
+
+
+
+
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+

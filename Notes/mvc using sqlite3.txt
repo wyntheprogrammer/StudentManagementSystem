@@ -1,0 +1,139 @@
+--Open cmd
+window + x type cmd
+
+
+--Create the project
+dotnet new mvc -n StudentManagementSystem
+
+
+--Navigate to project
+cd StudentManagementSystem
+
+
+--Open the project in vs code
+code .
+
+
+--Run the project
+dotnet run / dotnet watch run --for realtime
+--install
+dotnet add package Microsoft.EntityFrameworkCore
+dotnet build
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet build
+
+--Input at the beginning of Program.cs
+using Microsoft.EntityFrameworkCore
+
+--Input at Program.cs 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(@"Data Source=C:\Users\JPBACOLOD\StudentManagementSystem\Database\studentsm.db"));
+
+var app = builder.Build();
+
+
+--Create new folder named Data 
+
+--Create new file named AppDbContext.cs
+
+--Input this
+using Microsoft.EntityFrameworkCore;
+using StudentManagementSystem.Models; 
+
+public class AppDbContext : DbContext
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options) { }
+
+    public DbSet<Student> Students { get; set; }
+}
+
+
+
+--Create new file under Model, named it Student.cs
+
+--Input this
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace StudentManagementSystem.Models
+{
+    [Table("Students")]
+    public class Student
+    {
+        [Key]
+        public int Student_Id { get; set; }
+        public string Image { get; set; }
+        public string Name { get; set; }
+        public string Birthday { get; set; }
+        public string Gender { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+    }
+}
+
+
+
+
+--Create new file under Controller, named it StudentsController
+
+--Input this
+using Microsoft.AspNetCore.Mvc;
+using StudentManagementSystem.Models;
+
+namespace StudentManagementSystem.Controllers
+{
+
+
+    public class StudentsController : Controller
+    {
+        private readonly ILogger<StudentsController> _logger;
+        private readonly AppDbContext _context;
+
+        public StudentsController(ILogger<StudentsController> logger, AppDbContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
+
+
+        public IActionResult Index()
+        {
+            var students = _context.Students.ToList();
+            Console.WriteLine($"Student count: {students.Count}"); // Debug line
+            return View(students);
+        }
+    }
+}
+
+
+
+
+--Create new folder under Views named it Students
+--Create new file under it named Index.cshtml
+
+--Input this
+@foreach (var student in Model) {
+            <tr>
+                <td>@student.Student_Id</td>
+                <td>@student.Image</td>
+                <td>@student.Name</td>
+                <td>@student.Birthday</td>
+                <td>@student.Gender</td>
+                <td>@student.Address</td>
+                <td>@student.Phone</td>
+                <td>@student.Email</td>
+                <td></td>
+                <td class="text-center">
+                    <a type="button" 
+                        asp-action="Edit" asp-route-id="@student.Student_Id"
+                        class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                    <button type="button"  
+                        asp-action="Delete" asp-route-id="@student.Student_Id"
+                        class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                </td>
+            </tr>
+            }
+
+

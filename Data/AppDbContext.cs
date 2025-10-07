@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using StudentManagementSystem.Models; 
+using StudentManagementSystem.Models;
 
 public class AppDbContext : DbContext
 {
@@ -7,4 +7,6 @@ public class AppDbContext : DbContext
         : base(options) { }
 
     public DbSet<Student> Students { get; set; }
+    public DbSet<Marks> Marks { get; set; }
+
 }

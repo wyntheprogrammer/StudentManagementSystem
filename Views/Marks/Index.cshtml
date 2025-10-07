@@ -1,0 +1,153 @@
+@model List<Marks>
+
+<h2 class="m-5">Marks</h2>
+
+<div class="d-flex flex-column gap-4 m-5">
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] !=null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+
+
+
+
+    @* Search Container *@
+    <form asp-controller="Marks" asp-action="Search" method="get" class="d-flex flex-row justify-content-between">
+        <div class="form-group" style="width: 50%">
+            <input type="text" name="search" class="form-control" placeholder="Search by marks">
+        </div>
+
+        <div class="form-group" style="width: 35%">
+            <select class="form-select" id="status" name="status">
+                <option value="">Search by status</option>
+                <option value="Fail">Failed</option>
+                <option value="Pass">Passed</option>           
+            </select>
+        </div>
+
+        <div class="bg-white d-flex justify-content-cneter" style="width: 10%">
+            <button type="submit" class="bg-white border-0">
+                <i class="bi bi-search w-auto"></i> Search
+            </button>
+        </div>
+    </form>
+
+
+
+
+
+    @* Add Button *@
+    <button type="button" class="btn btn-primary" id="openAddModal" style="width: fit-content;">
+        <i class="bi bi-plus"></i> Add New Student
+    </button>
+
+
+
+
+    @* Student Table *@
+    <div class="d-flex flex-column align-items-center">
+        <table class="table table-bordered table-striped bg-white">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Enrollment</th>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Marks</th>
+                    <th>Status</th>
+                    <th>Remark</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model !=null && Model.Any())
+                {
+                    @foreach (var marks in Model) {
+                        <tr>
+                            <td>@marks.Mark_Id</td>
+                            <td>@marks.Student_Id</td>
+                            <td>@marks.Student.Name</td>
+                            <td>@marks.Course</td>
+                            <td>@marks.Mark</td>
+                            <td>@marks.Status</td>
+                            <td>@marks.Remark</td>
+                            <td>@marks.Date.ToString("MMMM dd, yyyy")</td>
+                            <td class="text-center">
+                                <button type="button" 
+                                        class="btn btn-primary m-1 openEditModal" 
+                                        data-id="@marks.Mark_Id">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button type="button"  
+                                    data-id="@marks.Mark_Id"
+                                    class="btn btn-danger openDeleteModal">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                } else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center text-muted">No Marks found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+         <nav aria-label="Marks Pagination">
+            <ul class="pagination">
+                <li class="page-item @(ViewBag.Window == 1 ? "disabled" : "")">
+                    <a class="page-link" 
+                        asp-action="Search" 
+                        asp-route-page="@((ViewBag.StartPage - 5) > 0 ? ViewBag.StartPage - 5 : 1)" 
+                        asp-route-window="@(ViewBag.Window - 1)"
+                        asp-route-search="@ViewBag.Search"
+                        asp-route-status="@ViewBag.Status">
+                        Previous
+                    </a>
+                </li>
+
+                @for (int i = ViewBag.StartPage; i <= ViewBag.EndPage; i++)
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                        <a class="page-link"
+                            asp-action="Search" 
+                            asp-route-page="@i"
+                            asp-route-window="@ViewBag.Window"
+                            asp-route-search="@ViewBag.Search"
+                            asp-route-status="@ViewBag.Status">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @(ViewBag.EndPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" 
+                        asp-action="Search" 
+                        asp-route-page="@((ViewBag.EndPage + 1) <= ViewBag.TotalPages ? ViewBag.EndPage + 1 : ViewBag.TotalPages)" 
+                        asp-route-window="@(ViewBag.Window + 1)"
+                        asp-route-search="@ViewBag.Search"
+                        asp-route-status="@ViewBag.Status">
+                        Next
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>

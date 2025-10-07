@@ -6,33 +6,11 @@ using StudentManagementSystem.Models;
 
 namespace StudentManagementSystem.Controllers
 {
-
-
     public class StudentsController : Controller
     {
         private readonly ILogger<StudentsController> _logger;
         private readonly AppDbContext _context;
 
-        // private void SeedDummyStudents()
-        // {
-
-        //         for (int i = 1; i <= 100; i++)
-        //         {
-        //             _context.Students.Add(new Student
-        //             {
-        //                 Name = $"Student {i}",
-        //                 Gender = i % 2 == 0 ? "Male" : "Female",
-        //                 Birthday = $"Bday",
-        //                 Address = $"Address {i}",
-        //                 Phone = $"0917{i:D7}",
-        //                 Email = $"student{i}@school.com",
-        //                 Image = "default.jpg"
-        //             });
-        //         }
-
-        //         _context.SaveChanges();
-
-        // }
 
         public StudentsController(ILogger<StudentsController> logger, AppDbContext context)
         {
@@ -88,7 +66,7 @@ namespace StudentManagementSystem.Controllers
 
         private void TotalFemale()
         {
-             int totalStudents = _context.Students.Count();
+            int totalStudents = _context.Students.Count();
             int totalMale = _context.Students.Count(s => s.Gender == "Male");
 
             double FemalePercentage = totalStudents > 0
@@ -265,5 +243,27 @@ namespace StudentManagementSystem.Controllers
 
 
 
+
+
+        // private void SeedDummyStudents()
+        // {
+
+        //         for (int i = 1; i <= 100; i++)
+        //         {
+        //             _context.Students.Add(new Student
+        //             {
+        //                 Name = $"Student {i}",
+        //                 Gender = i % 2 == 0 ? "Male" : "Female",
+        //                 Birthday = $"Bday",
+        //                 Address = $"Address {i}",
+        //                 Phone = $"0917{i:D7}",
+        //                 Email = $"student{i}@school.com",
+        //                 Image = "default.jpg"
+        //             });
+        //         }
+
+        //         _context.SaveChanges();
+
+        // }
     }
 }

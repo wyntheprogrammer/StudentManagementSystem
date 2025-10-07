@@ -1,0 +1,98 @@
+Students Table
+Student_ID
+Image
+Name
+Birthday
+Gender
+Address
+Phone
+Email
+               
+Marks Table
+Mark_ID
+Student ID
+Enrollment_ID
+Course_ID 
+Marks
+Status 
+Remark
+Date
+
+
+Course Table
+Course_ID
+
+Description
+Duration
+Instructor
+Level
+Fee
+Enrolled Students
+
+
+Enrollments Table
+Enrollment_ID
+Student_ID
+Course
+Enrollment Date
+Status
+
+
+Users
+Full Name
+Email
+Password
+Phone Number
+User Role
+
+
+
+
+CREATE TABLE Students (
+    Student_ID INTEGER PRIMARY KEY,
+    Image TEXT,
+    Name TEXT NOT NULL,
+    Birthday DATE,
+    Gender TEXT,
+    Address TEXT,
+    Phone TEXT,
+    Email TEXT
+);
+
+
+CREATE TABLE Marks (
+    Mark_ID INTEGER PRIMARY KEY,
+    Student_ID INTEGER,
+    Enrollment_ID INTEGER,
+    Course_ID INTEGER,
+    Mark TEXT,
+    Status TEXT,
+    Remark TEXT,
+    Date DATE,
+    FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID),
+    FOREIGN KEY (Enrollment_ID) REFERENCES Enrollments(Enrollment_ID),
+    FOREIGN KEY (Course_ID) REFERENCES Course(Enrollment_ID)
+);
+
+
+CREATE TABLE Course (
+    Course_ID INTEGER PRIMARY KEY,
+    Course TEXT,
+    Description TEXT,
+    Duration TEXT,
+    Instructor TEXT,
+    Level TEXT,
+    Fee REAL,
+    Enrolled_Students INTEGER,
+    FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID)
+);
+
+
+CREATE TABLE Enrollments (
+    Enrollment_ID INTEGER PRIMARY KEY,
+    Student_ID INTEGER,
+    Course TEXT,
+    Enrollment_Date DATE,
+    Status TEXT,
+    FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID)
+);
