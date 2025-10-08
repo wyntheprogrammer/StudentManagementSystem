@@ -1,0 +1,268 @@
+@model List<Enrollments>
+
+<h2 class="m-5">Enrollments</h2>
+
+<div class="d-flex flex-column gap-4 m-5">
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @* Search Container *@
+    <form asp-controller="Enrollments" asp-action="Search" method="get" class="d-flex flex-row justify-content-between">
+         <div class="form-group" style="width: 50%">
+            <input type="text" name="search" class="form-control" placeholder="Search by student"/>
+        </div>
+
+        <div class="form-group" style="width: 35%">
+            <select class="form-select" id="status" name="status">
+                <option value="">Search by status</option>
+                <option value="Active">Active</option>
+                <option value="Dropped">Dropped</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+
+        <div class="bg-white d-flex justify-content-center" style="width: 10%">
+            <button type="submit" class="bg-white border-0">            
+                <i class="bi bi-search w-auto"></i>  Search
+            </button>
+        </div>
+    </form>
+
+
+
+
+    @* Add Button *@
+    <button type="button" class="btn btn-primary" id="openAddModal" style="width:fit-content">
+        <i class="bi bi-plus"></i> Add New Enrollment
+    </button>
+
+
+    
+
+    @* Students table *@
+    <div class="d-flex flex-column align-items-center">
+         <table class="table table-bordered table-striped bg-white">
+             <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student Name</th>
+                    <th>Course</th>
+                    <th>Enrollment Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model !=null && Model.Any())
+                {
+                    @foreach (var enrollments in Model) {
+                        <tr>
+                            <td>@enrollments.Student_Id</td>
+                            <td>@enrollments.student.Name</td>
+                            <td>@enrollments.course.Course</td>
+                            <td>@enrollments.Enrollment_date.ToString("MMMM dd, yyyy")</td>
+                            <td>@enrollments.Status</td>
+                            <td class="text-center">
+                                <button type="button" 
+                                        class="btn btn-primary m-1 openEditModal" 
+                                        data-id="@enrollments.Enrollment_Id">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button type="button"  
+                                    data-id="@enrollments.Enrollment_Id"
+                                    class="btn btn-danger openDeleteModal">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                } else 
+                {
+                 <tr>
+                    <td colspan="11" class="text-center text-muted">No Enrollment found.</td>
+                 </tr>   
+                }
+            </tbody>
+        </table>
+    
+        <nav aria-label="Student Pagination">
+            <ul class="pagination">
+                <li class="page-item @(ViewBag.Window == 1 ? "disabled" : "")">
+                    <a class="page-link" 
+                        asp-action="Search" 
+                        asp-route-page="@((ViewBag.StartPage - 5) > 0 ? ViewBag.StartPage - 5 : 1)" 
+                        asp-route-window="@(ViewBag.Window - 1)"
+                        asp-route-search="@ViewBag.Search"
+                        asp-route-status="@ViewBag.Status">
+                        Previous
+                    </a>
+                </li>
+
+                @for (int i = ViewBag.StartPage; i <= ViewBag.EndPage; i++)
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                        <a class="page-link"
+                            asp-action="Search" 
+                            asp-route-page="@i"
+                            asp-route-window="@ViewBag.Window"
+                            asp-route-search="@ViewBag.Search"
+                            asp-route-status="@ViewBag.Status">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @(ViewBag.EndPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" 
+                        asp-action="Search" 
+                        asp-route-page="@((ViewBag.EndPage + 1) <= ViewBag.TotalPages ? ViewBag.EndPage + 1 : ViewBag.TotalPages)" 
+                        asp-route-window="@(ViewBag.Window + 1)"
+                        asp-route-search="@ViewBag.Search"
+                        asp-route-status="@ViewBag.Status">
+                        Next
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+
+
+    </div>
+
+
+
+
+    @* Student demogarphics *@
+    <div class="d-flex flex-row justify-content-between">
+
+        <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
+            <i class="fs-4 bi-people-fill"></i> 
+            <div>Total Enrollments</div>
+            <div>@ViewBag.EnrollmentsCount</div>
+        </div>
+
+        <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
+            <i class="fs-4 bi-check-circle-fill"></i> 
+            <div>Active Enrollments</div>
+            <div>@ViewBag.ActiveCount</div>
+        </div>
+
+        <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
+            <i class="fs-4 bi-x-circle-fill"></i> 
+            <div>Inactive Enrollments</div>
+            <div > @ViewBag.InactiveCount</div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+@* Add Modal *@
+<div id="addModalContainer"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const button = document.getElementById("openAddModal");
+        const container = document.getElementById("addModalContainer");
+
+        button.addEventListener("click", function () {
+            fetch("/Enrollments/AddModal")
+                .then(response => response.text())
+                .then(html => {
+                    container.innerHTML = html;
+                    const modal = document.getElementById("addModal");
+                    if (modal) {
+                        // Bootstrap 5 modal
+                        const modalInstance = new bootstrap.Modal(modal);
+                        modalInstance.show();
+                    }
+                })
+                .catch(error => {
+                    console.error("Error loading modal:", error);
+                });
+            });
+        });
+</script>
+
+
+@* Edit Modal *@
+<div id="editModalContainer"></div>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".openEditModal");
+        const container = document.getElementById("editModalContainer");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function () {
+                const studentId = this.getAttribute("data-id");
+
+                fetch(`/Enrollments/EditModal?id=${studentId}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                        const modal = document.getElementById("editModal");
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error loading modal:", error);
+                    });
+            });
+        });
+    });
+</script>
+
+
+@* Delete Modal *@
+<div id="deleteModalContainer"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".openDeleteModal");
+        const container = document.getElementById("deleteModalContainer");
+
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const studentId = this.getAttribute("data-id");
+
+                fetch(`/Enrollments/DeleteModal?id=${studentId}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                        const modal = document.getElementById("deleteModal");
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error loading delete modal:", error);
+                    });
+            });
+        });
+    });
+</script>
+
+
+

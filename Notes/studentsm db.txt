@@ -71,28 +71,27 @@ CREATE TABLE Marks (
     Date DATE,
     FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID),
     FOREIGN KEY (Enrollment_ID) REFERENCES Enrollments(Enrollment_ID),
-    FOREIGN KEY (Course_ID) REFERENCES Course(Enrollment_ID)
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
 );
 
 
-CREATE TABLE Course (
+CREATE TABLE Courses (
     Course_ID INTEGER PRIMARY KEY,
     Course TEXT,
     Description TEXT,
-    Duration TEXT,
+    Duration INTEGER,
     Instructor TEXT,
     Level TEXT,
-    Fee REAL,
-    Enrolled_Students INTEGER,
-    FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID)
+    Fee REAL
 );
 
 
 CREATE TABLE Enrollments (
     Enrollment_ID INTEGER PRIMARY KEY,
     Student_ID INTEGER,
-    Course TEXT,
+    Course_ID INTEGER,
     Enrollment_Date DATE,
     Status TEXT,
-    FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID)
+    FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID),
+    FOREIGN KEY (Course_ID) REFERENCES Students(Course_ID)
 );

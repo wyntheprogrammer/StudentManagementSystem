@@ -56,6 +56,8 @@ namespace StudentManagementSystem.Controllers
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Include(m => m.Student) // Include foreign key data
+                .Include(m => m.Enrollment)
+                .Include(m => m.Course)
                 .ToList();
 
             ViewBag.CurrentPage = page;

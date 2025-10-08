@@ -9,4 +9,7 @@ public class AppDbContext : DbContext
     public DbSet<Student> Students { get; set; }
     public DbSet<Marks> Marks { get; set; }
 
+    public DbSet<Courses> Courses { get; set; }
+    public DbSet<Enrollments> Enrollments { get; set; }
+
 }
