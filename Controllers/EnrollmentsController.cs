@@ -183,8 +183,6 @@ namespace StudentManagementSystem.Controllers
             ViewBag.StudentList = new SelectList(_context.Students, "Student_Id", "Name");
             ViewBag.CourseList = new SelectList(_context.Courses, "Course_Id", "Course");
 
-
-
             return PartialView("EditModal", enrollment);
         }
 

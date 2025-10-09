@@ -46,17 +46,6 @@
     </form>
 
 
-
-
-
-    @* Add Button *@
-    <button type="button" class="btn btn-primary" id="openAddModal" style="width: fit-content;">
-        <i class="bi bi-plus"></i> Add New Student
-    </button>
-
-
-
-
     @* Student Table *@
     <div class="d-flex flex-column align-items-center">
         <table class="table table-bordered table-striped bg-white">
@@ -80,8 +69,8 @@
                         <tr>
                             <td>@marks.Mark_Id</td>
                             <td>@marks.Enrollment_Id</td>
-                            <td>@marks.Student.Name</td>
-                            <td>@marks.Course.Course</td>
+                            <td>@marks.student.Name</td>
+                            <td>@marks.course.Course</td>
                             <td>@marks.Mark</td>
                             <td>@marks.Status</td>
                             <td>@marks.Remark</td>
@@ -151,3 +140,73 @@
         </nav>
     </div>
 </div>
+
+
+
+
+
+
+
+@* Edit Modal *@
+<div id="editModalContainer"></div>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".openEditModal");
+        const container = document.getElementById("editModalContainer");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function () {
+                const markId = this.getAttribute("data-id");
+
+                fetch(`/Marks/EditModal?id=${markId}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                        const modal = document.getElementById("editModal");
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error loading modal:", error);
+                    });
+            });
+        });
+    });
+</script>
+
+
+@* Delete Modal *@
+<div id="deleteModalContainer"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".openDeleteModal");
+        const container = document.getElementById("deleteModalContainer");
+
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const markId = this.getAttribute("data-id");
+
+                fetch(`/Marks/DeleteModal?id=${markId}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                        const modal = document.getElementById("deleteModal");
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error loading delete modal:", error);
+                    });
+            });
+        });
+    });
+</script>
+
+
+

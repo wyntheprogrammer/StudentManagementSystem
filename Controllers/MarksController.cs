@@ -55,9 +55,9 @@ namespace StudentManagementSystem.Controllers
                 .OrderBy(s => s.Mark_Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Include(m => m.Student) // Include foreign key data
-                .Include(m => m.Enrollment)
-                .Include(m => m.Course)
+                .Include(m => m.student) 
+                .Include(m => m.enrollment)
+                .Include(m => m.course)
                 .ToList();
 
             ViewBag.CurrentPage = page;
@@ -70,5 +70,52 @@ namespace StudentManagementSystem.Controllers
 
             return View("Index", pagedMarks);
         }
+
+
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Mark Edit Modal ////////////////////////////////// 
+        ////////////////////////////////////////////////////////////////////////////////////////
+        [HttpGet]
+        public IActionResult EditModal(int id)
+        {
+            var marks = _context.Marks
+                .Include(m => m.student)
+                .Include(m => m.course)
+                .FirstOrDefault(m => m.Mark_Id == id);
+            if(marks == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("EditModal", marks);
+        }
+
+        public IActionResult EditMark(Marks marks)
+        {
+            var existingMark = _context.Marks.FirstOrDefault(m => m.Mark_Id == marks.Mark_Id);
+            if (existingMark == null)
+            {
+                TempData["ErrorMessage"] = "Failed to update mark. Please check the form for errors.";
+                return NotFound();
+            }
+
+            existingMark.Enrollment_Id = marks.Enrollment_Id;
+            existingMark.Student_Id = marks.Student_Id;
+            existingMark.Course_Id = marks.Course_Id;
+            existingMark.Mark = marks.Mark;
+            existingMark.Status = marks.Status;
+            existingMark.Remark = marks.Remark;
+            existingMark.Date = marks.Date;
+
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Mark updated successfully!";
+            return RedirectToAction("Search");
+        }
+
     }
 }

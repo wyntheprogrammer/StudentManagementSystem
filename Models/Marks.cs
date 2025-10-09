@@ -9,23 +9,20 @@ namespace StudentManagementSystem.Models
         [Key]
         public int Mark_Id { get; set; }
         public int Student_Id { get; set; }
-        
-        [ForeignKey("Student_Id")]
-        public Student Student { get; set; }
-
         public int Enrollment_Id { get; set; }
-
-        [ForeignKey("Enrollment_Id")]
-        public Enrollments Enrollment { get; set; }
-
         public int Course_Id { get; set; }
-
-        [ForeignKey("Course_Id")]
-        public Courses Course { get; set; }
-
         public string Mark { get; set; }
         public string Status { get; set; }
         public string Remark { get; set; }
         public DateTime Date { get; set; }
+
+        [ForeignKey("Student_Id")]
+        public Student student { get; set; }
+        
+        [ForeignKey("Enrollment_Id")]
+        public Enrollments enrollment { get; set; }
+
+        [ForeignKey("Course_Id")]
+        public Courses course { get; set; }
     }
 }

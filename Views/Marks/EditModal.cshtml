@@ -1,0 +1,53 @@
+@{
+    Layout = null;
+}
+
+@model StudentManagementSystem.Models.Marks
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editForm" asp-controller="Marks"  asp-action="EditMark" method="post">
+                <input type="hidden" asp-for="Mark_Id" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Mark</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column gap-2">
+                    <div class="form-group">
+                        <label asp-for="Enrollment_Id"></label>
+                        <input type="text" asp-for="Enrollment_Id" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Name"></label>
+                        <input type="text" value="@Model.student?.Name" class="form-control" readonly />                    
+                    </div>
+                    <div class="form-group">
+                        <label for="Course"></label>
+                        <input type="text" value="@Model.course?.Course" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Mark"></label>
+                        <input type="text" asp-for="Mark" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Status"></label>
+                        <input type="text" asp-for="Status" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Remark"></label>
+                        <input type="text" asp-for="Remark" class="form-control" />
+                    </div>
+                     <div class="form-group">
+                        <label asp-for="Date"></label>
+                        <input type="date" asp-for="Date" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary w-100">Edit Mark</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
