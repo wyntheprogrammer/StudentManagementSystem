@@ -45,7 +45,7 @@ namespace StudentManagementSystem.Controllers
         private void InactiveEnrollments()
         {
             int inactiveCount = _context.Enrollments
-                .Where(e => e.Status == "Dropped")
+                .Where(e => e.Status == "Inactive")
                 .Count();
 
             ViewBag.InactiveCount = inactiveCount;
@@ -136,11 +136,6 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEnrollment(Enrollments enrollment)
         {
-            foreach (var key in Request.Form.Keys)
-            {
-                Console.WriteLine($"{key}: {Request.Form[key]}");
-            }
-
             if (ModelState.IsValid)
             {
                 _context.Enrollments.Add(enrollment);
@@ -149,7 +144,10 @@ namespace StudentManagementSystem.Controllers
                 TempData["SuccessMessage"] = "Enrollment added successfully!";
                 return RedirectToAction("Search");
             }
-            TempData["ErrorMessage"] = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+
+            // TempData["ErrorMessage"] = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+            TempData["ErrorMessage"] = string.Join(" | ", ModelState.Select(kvp => $"{kvp.Key}: {string.Join(", ", kvp.Value.Errors.Select(e => e.ErrorMessage))}"));
+
             return RedirectToAction("Search");
         }
 
@@ -160,5 +158,92 @@ namespace StudentManagementSystem.Controllers
         ////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////// Enrollment Edit Modal ////////////////////////////////// 
         ////////////////////////////////////////////////////////////////////////////////////////
+        [HttpGet]
+        public IActionResult EditModal(int id)
+        {
+            var enrollment = _context.Enrollments.FirstOrDefault(e => e.Enrollment_Id == id);
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+
+            var students = _context.Students.Select(s => new SelectListItem
+            {
+                Value = s.Student_Id.ToString(),
+                Text = s.Name
+            }).ToList();
+
+            var courses = _context.Courses.Select(c => new SelectListItem
+            {
+                Value = c.Course_Id.ToString(),
+                Text = c.Course
+            }).ToList();
+
+
+            ViewBag.StudentList = new SelectList(_context.Students, "Student_Id", "Name");
+            ViewBag.CourseList = new SelectList(_context.Courses, "Course_Id", "Course");
+
+
+
+            return PartialView("EditModal", enrollment);
+        }
+
+        [HttpPost]
+        public IActionResult EditEnrollment(Enrollments enrollment)
+        {
+            var existingEnrollment = _context.Enrollments.FirstOrDefault(e => e.Enrollment_Id == enrollment.Enrollment_Id);
+            if(existingEnrollment == null)
+            {
+                TempData["Error Message"] = "Failed to update enrollment. Please check the form for errors.";
+                return NotFound();
+            }
+
+            existingEnrollment.Student_Id = enrollment.Student_Id;
+            existingEnrollment.Course_Id = enrollment.Course_Id;
+            existingEnrollment.Enrollment_date = enrollment.Enrollment_date;
+            existingEnrollment.Status = enrollment.Status;
+
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Enrollment updated successfully!";
+            return RedirectToAction("Search");
+        }
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Student Delete Modal ////////////////////////////////// 
+        ////////////////////////////////////////////////////////////////////////////////////////
+        [HttpGet]
+        public IActionResult DeleteModal(int id)
+        {
+            var enrollment = _context.Enrollments   
+                 .Include(e => e.student)
+                 .FirstOrDefault(e => e.Enrollment_Id == id);
+            if(enrollment == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("DeleteModal", enrollment);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteEnrollment(Enrollments enrollment)
+        {
+            var existingEnrollment = _context.Enrollments.FirstOrDefault(e => e.Enrollment_Id == enrollment.Enrollment_Id);
+            if(existingEnrollment == null)
+            {
+                TempData["ErrorMessage"] = "Failed to delete enrollment. Please check the form for errors.";
+                return NotFound();
+            }
+
+            _context.Enrollments.Remove(existingEnrollment);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Enrollment deleted successfully!";
+            return RedirectToAction("Search");
+        }
     }
 }

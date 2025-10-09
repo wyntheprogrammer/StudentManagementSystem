@@ -29,8 +29,7 @@
             <select class="form-select" id="status" name="status">
                 <option value="">Search by status</option>
                 <option value="Active">Active</option>
-                <option value="Dropped">Dropped</option>
-                <option value="Completed">Completed</option>
+                <option value="Inactive">Inactive</option>
             </select>
         </div>
 
@@ -213,9 +212,9 @@
 
         buttons.forEach(button => {
             button.addEventListener("click", function () {
-                const studentId = this.getAttribute("data-id");
+                const enrollmentId = this.getAttribute("data-id");
 
-                fetch(`/Enrollments/EditModal?id=${studentId}`)
+                fetch(`/Enrollments/EditModal?id=${enrollmentId}`)
                     .then(response => response.text())
                     .then(html => {
                         container.innerHTML = html;
@@ -244,9 +243,9 @@
 
         deleteButtons.forEach(button => {
             button.addEventListener("click", function () {
-                const studentId = this.getAttribute("data-id");
+                const enrollmentId = this.getAttribute("data-id");
 
-                fetch(`/Enrollments/DeleteModal?id=${studentId}`)
+                fetch(`/Enrollments/DeleteModal?id=${enrollmentId}`)
                     .then(response => response.text())
                     .then(html => {
                         container.innerHTML = html;

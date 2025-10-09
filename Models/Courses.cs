@@ -14,5 +14,8 @@ namespace StudentManagementSystem.Models
         public string Instructor { get; set; }
         public string Level { get; set; }
         public string Fee { get; set; }
+
+        public ICollection<Enrollments> Enrollments { get; set; } // Optional reverse navigation
+
     }
 }

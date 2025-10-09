@@ -93,5 +93,5 @@ CREATE TABLE Enrollments (
     Enrollment_Date DATE,
     Status TEXT,
     FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID),
-    FOREIGN KEY (Course_ID) REFERENCES Students(Course_ID)
+    FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID)
 );

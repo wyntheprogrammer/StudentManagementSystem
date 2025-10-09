@@ -8,24 +8,28 @@
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="addForm" asp-action="AddEnrollment" method="post">
+            <form asp-action="AddEnrollment" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModalLabel">Add Enrollment</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column gap-2">
+                     <!-- Student Dropdown -->
                     <div class="form-group">
                         <label asp-for="Student_Id"></label>
-                        <select asp-validation-for="Student_Id" class="form-select" asp-items="ViewBag.StudentList">
+                       <select asp-for="Student_Id" class="form-select" asp-items="ViewBag.StudentList">
                             <option value="">Select student</option>
                         </select>
                     </div>
-                     <div class="form-group">
+
+                    <!-- Course Dropdown -->
+                    <div class="form-group">
                         <label asp-for="Course_Id"></label>
-                        <select asp-validation-for="Course_Id" class="form-select" asp-items="ViewBag.CourseList" required>
+                        <select asp-for="Course_Id" class="form-select" asp-items="ViewBag.CourseList">
                             <option value="">Select course</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label asp-for="Enrollment_date"></label>
                         <input type="date" asp-for="Enrollment_date" class="form-control" />

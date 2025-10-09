@@ -19,6 +19,7 @@ namespace StudentManagementSystem.Models
         public string Phone { get; set; }
         public string Email { get; set; }
 
+        public ICollection<Enrollments> Enrollments { get; set; } // Optional reverse navigation
         public ICollection<Marks> Marks { get; set; } // Optional reverse navigation
     }
 }
