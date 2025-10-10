@@ -214,5 +214,89 @@ namespace StudentManagementSystem.Controllers
             TempData["SuccessMessage"] = "Course deleted successfully!";
             return RedirectToAction("Search");
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public IActionResult View(int id)
+        {
+            var enrollments = _context.Enrollments
+                .Where(e => e.Course_Id == id)
+                .ToList();
+
+            var students = _context.Students.ToList();
+            var marks = _context.Marks.ToList(); 
+
+            var enrollmentDetails = (from enrollment in enrollments
+                                     join student in students on enrollment.Student_Id equals student.Student_Id
+                                     join mark in marks on enrollment.Enrollment_Id equals mark.Enrollment_Id into markGroup
+                                     from mark in markGroup.DefaultIfEmpty()
+                                     select new EnrollmentMarkView
+                                     {
+                                         Enrollment_Id = enrollment.Enrollment_Id,
+                                         Students = student.Name,
+                                         Student_Id = student.Student_Id,
+                                         Mark = mark != null ? mark.Mark : "Not marked"
+                                     }).ToList();
+
+            return PartialView("View", enrollmentDetails);
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Mark Add Modal ////////////////////////////////////// 
+        ////////////////////////////////////////////////////////////////////////////////////////
+        [HttpGet]
+        public IActionResult ViewMark(int id)
+        {
+            var enrollmentDetails = (from enrollment in _context.Enrollments
+                                     join course in _context.Courses on enrollment.Course_Id equals course.Course_Id
+                                     join mark in _context.Marks on enrollment.Enrollment_Id equals mark.Enrollment_Id into markGroup
+                                     from mark in markGroup.DefaultIfEmpty()
+                                     where enrollment.Enrollment_Id == id
+                                     select new EnrollmentMarkView
+                                     {
+                                         Enrollment_Id = enrollment.Enrollment_Id,
+                                         Student_Id = enrollment.Student_Id,
+                                         Course_Id = course.Course_Id,
+                                         Courses = course.Course,
+                                         Mark = mark != null ? mark.Mark.ToString() : "Not marked"
+                                     }).FirstOrDefault();
+
+            if (enrollmentDetails == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView(enrollmentDetails);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddMark(Marks marks)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Marks.Add(marks);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Mark added successfully!";
+                return RedirectToAction("Search");
+            }
+
+            TempData["ErrorMessage"] = "Failed to add student. Please check the form for errors.";
+            return RedirectToAction("Search");
+        }
+
+
     }
 }

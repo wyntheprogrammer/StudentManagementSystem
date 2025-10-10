@@ -16,6 +16,8 @@ namespace StudentManagementSystem.Models
         public string Fee { get; set; }
 
         public ICollection<Enrollments> Enrollments { get; set; } // Optional reverse navigation
+        public ICollection<Marks> Marks { get; set; } // Optional reverse navigation
+
 
     }
 }

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace StudentManagementSystem.Models
 {
@@ -17,12 +18,15 @@ namespace StudentManagementSystem.Models
         public DateTime Date { get; set; }
 
         [ForeignKey("Student_Id")]
+        [ValidateNever]
         public Student student { get; set; }
-        
+
         [ForeignKey("Enrollment_Id")]
+        [ValidateNever]
         public Enrollments enrollment { get; set; }
 
         [ForeignKey("Course_Id")]
+        [ValidateNever]
         public Courses course { get; set; }
     }
 }

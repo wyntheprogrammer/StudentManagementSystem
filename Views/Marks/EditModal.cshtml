@@ -20,12 +20,14 @@
                         <input type="text" asp-for="Enrollment_Id" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="Name"></label>
-                        <input type="text" value="@Model.student?.Name" class="form-control" readonly />                    
+                        <label for="Name">Name</label>
+                        <input type="hidden" asp-for="Student_Id" />
+                        <input type="text" value="@Model.student?.Name" class="form-control" readonly />
                     </div>
                     <div class="form-group">
-                        <label for="Course"></label>
-                        <input type="text" value="@Model.course?.Course" class="form-control" readonly/>
+                        <label for="Course">Course</label>
+                        <input type="hidden" asp-for="Course_Id" />
+                        <input type="text" value="@Model.course?.Course" class="form-control" readonly />
                     </div>
                     <div class="form-group">
                         <label asp-for="Mark"></label>

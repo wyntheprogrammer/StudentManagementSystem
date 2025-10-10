@@ -8,8 +8,18 @@ public class AppDbContext : DbContext
 
     public DbSet<Student> Students { get; set; }
     public DbSet<Marks> Marks { get; set; }
-
     public DbSet<Courses> Courses { get; set; }
     public DbSet<Enrollments> Enrollments { get; set; }
+    public DbSet<Users> Users { get; set; }
+    public DbSet<EnrollmentMarkView> EnrollmentMarkView { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        // Mark EnrollmentMarkView as keyless
+        modelBuilder.Entity<EnrollmentMarkView>().HasNoKey();
+    }
 }
+
+
+

@@ -1,0 +1,44 @@
+@{
+    Layout = null;
+}
+
+@model StudentManagementSystem.Models.Users
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addForm" asp-action="AddUser" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column gap-2">
+                    <div class="form-group">
+                        <label asp-for="Name"></label>
+                        <input type="text" asp-for="Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input type="text" asp-for="Email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password"></label>
+                        <input type="text" asp-for="Password" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Phone"></label>
+                        <input type="text" asp-for="Phone" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Role"></label>
+                        <input type="text" asp-for="Role" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary w-100">Add Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

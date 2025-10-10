@@ -55,7 +55,7 @@ namespace StudentManagementSystem.Controllers
                 .OrderBy(s => s.Mark_Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Include(m => m.student) 
+                .Include(m => m.student)
                 .Include(m => m.enrollment)
                 .Include(m => m.course)
                 .ToList();
@@ -86,7 +86,7 @@ namespace StudentManagementSystem.Controllers
                 .Include(m => m.student)
                 .Include(m => m.course)
                 .FirstOrDefault(m => m.Mark_Id == id);
-            if(marks == null)
+            if (marks == null)
             {
                 return NotFound();
             }
@@ -116,6 +116,44 @@ namespace StudentManagementSystem.Controllers
             TempData["SuccessMessage"] = "Mark updated successfully!";
             return RedirectToAction("Search");
         }
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Mark Delete Modal ////////////////////////////////// 
+        ////////////////////////////////////////////////////////////////////////////////////////
+        [HttpGet]
+        public IActionResult DeleteModal(int id)
+        {
+            var marks = _context.Marks
+                 .Include(m => m.student)
+                 .FirstOrDefault(m => m.Mark_Id == id);
+            if (marks == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("DeleteModal", marks);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteMark(int id)
+        {
+            var existingMark = _context.Marks.FirstOrDefault(m => m.Mark_Id == id);
+            if (existingMark == null)
+            {
+                TempData["ErrorMessage"] = "Failed to delete mark. Please check the form for errors.";
+                return NotFound();
+            }
+
+            _context.Marks.Remove(existingMark);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Mark deleted successfully!";
+            return RedirectToAction("Search");
+        }
+
 
     }
 }

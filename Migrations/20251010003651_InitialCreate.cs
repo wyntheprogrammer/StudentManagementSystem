@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StudentManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCoursesTable : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Courses",
+                name: "courses",
                 columns: table => new
                 {
                     Course_Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -26,7 +26,7 @@ namespace StudentManagementSystem.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.Course_Id);
+                    table.PrimaryKey("PK_courses", x => x.Course_Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,16 +63,16 @@ namespace StudentManagementSystem.Migrations
                 {
                     table.PrimaryKey("PK_Enrollments", x => x.Enrollment_Id);
                     table.ForeignKey(
-                        name: "FK_Enrollments_Courses_Course_Id",
-                        column: x => x.Course_Id,
-                        principalTable: "Courses",
-                        principalColumn: "Course_Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Enrollments_Students_Student_Id",
                         column: x => x.Student_Id,
                         principalTable: "Students",
                         principalColumn: "Student_Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Enrollments_courses_Course_Id",
+                        column: x => x.Course_Id,
+                        principalTable: "courses",
+                        principalColumn: "Course_Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -94,12 +94,6 @@ namespace StudentManagementSystem.Migrations
                 {
                     table.PrimaryKey("PK_Marks", x => x.Mark_Id);
                     table.ForeignKey(
-                        name: "FK_Marks_Courses_Course_Id",
-                        column: x => x.Course_Id,
-                        principalTable: "Courses",
-                        principalColumn: "Course_Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Marks_Enrollments_Enrollment_Id",
                         column: x => x.Enrollment_Id,
                         principalTable: "Enrollments",
@@ -110,6 +104,12 @@ namespace StudentManagementSystem.Migrations
                         column: x => x.Student_Id,
                         principalTable: "Students",
                         principalColumn: "Student_Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Marks_courses_Course_Id",
+                        column: x => x.Course_Id,
+                        principalTable: "courses",
+                        principalColumn: "Course_Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -149,10 +149,10 @@ namespace StudentManagementSystem.Migrations
                 name: "Enrollments");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "courses");
         }
     }
 }

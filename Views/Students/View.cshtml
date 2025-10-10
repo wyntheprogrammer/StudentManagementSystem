@@ -1,0 +1,25 @@
+@model List<EnrollmentMarkView>
+
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Enrollment_Id</td>
+        <td>@item.Courses</td>
+        <td>@item.Mark</td>
+        <td>
+            @if (item.Mark == "Not marked")
+            {
+                <button type="button" 
+                    class="btn btn-primary m-1 openMarkModal" 
+                    data-id="@item.Enrollment_Id">
+                <i class="fs bi-plus-circle"></i> Set Mark
+                </button>
+            } else {
+                <span class="text-muted">Marked</span> 
+            }
+        </td>
+    </tr>
+}
+
+

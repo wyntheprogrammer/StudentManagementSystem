@@ -1,19 +1,19 @@
-@model StudentManagementSystem.Models.Marks
+@model StudentManagementSystem.Models.Users
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="deleteForm" asp-action="DeleteMark" method="post">
-                    <input type="hidden" name="id" value="@Model.Mark_Id" />
-                    <div class="modal-header">
+            <form id="deleteForm" asp-action="DeleteUser" method="post">
+                <input type="hidden" asp-for="User_Id" />
+                <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete <strong>@Model.student.Name</strong>?
+                    Are you sure you want to delete <strong>@Model.Name</strong>?
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger w-100">Delete Mark</button>
+                    <button type="submit" class="btn btn-danger w-100">Delete Student</button>
                 </div>
             </form>
         </div>

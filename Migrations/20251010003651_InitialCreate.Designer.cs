@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace StudentManagementSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251009071528_AddCoursesTable")]
-    partial class AddCoursesTable
+    [Migration("20251010003651_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,7 @@ namespace StudentManagementSystem.Migrations
 
                     b.HasKey("Course_Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("courses", (string)null);
                 });
 
             modelBuilder.Entity("StudentManagementSystem.Models.Enrollments", b =>
@@ -182,7 +182,7 @@ namespace StudentManagementSystem.Migrations
             modelBuilder.Entity("StudentManagementSystem.Models.Marks", b =>
                 {
                     b.HasOne("StudentManagementSystem.Models.Courses", "course")
-                        .WithMany()
+                        .WithMany("Marks")
                         .HasForeignKey("Course_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -209,6 +209,8 @@ namespace StudentManagementSystem.Migrations
             modelBuilder.Entity("StudentManagementSystem.Models.Courses", b =>
                 {
                     b.Navigation("Enrollments");
+
+                    b.Navigation("Marks");
                 });
 
             modelBuilder.Entity("StudentManagementSystem.Models.Student", b =>

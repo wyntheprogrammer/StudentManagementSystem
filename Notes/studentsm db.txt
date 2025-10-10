@@ -71,7 +71,7 @@ CREATE TABLE Marks (
     Date DATE,
     FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID),
     FOREIGN KEY (Enrollment_ID) REFERENCES Enrollments(Enrollment_ID),
-    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
+    FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID)
 );
 
 

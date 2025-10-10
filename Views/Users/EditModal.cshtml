@@ -1,0 +1,45 @@
+@{
+    Layout = null;
+}
+
+@model StudentManagementSystem.Models.Users
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editForm" asp-action="EditUser" method="post">
+            <input type="hidden" asp-for="User_Id" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column gap-2">
+                    <div class="form-group">
+                        <label asp-for="Name"></label>
+                        <input type="text" asp-for="Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input type="text" asp-for="Email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password"></label>
+                        <input type="text" asp-for="Password" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Phone"></label>
+                        <input type="text" asp-for="Phone" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Role"></label>
+                        <input type="text" asp-for="Role" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary w-100">Edit Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

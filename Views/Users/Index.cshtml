@@ -1,6 +1,6 @@
-@model List<Courses>
+@model List<Users>
 
-<h2 class="m-5">Courses</h2>
+<h2 class="m-5">Users</h2>
 
 <div class="d-flex flex-column gap-4 m-5">
 
@@ -20,17 +20,16 @@
     }
 
     @* Search Container *@
-    <form asp-controller="Courses" asp-action="Search" method="get" class="d-flex flex-row justify-content-between">
+    <form asp-controller="Users" asp-action="Search" method="get" class="d-flex flex-row justify-content-between">
          <div class="form-group" style="width: 50%">
-            <input type="text" name="search" class="form-control" placeholder="Search by course"/>
+            <input type="text" name="search" class="form-control" placeholder="Search by User"/>
         </div>
 
         <div class="form-group" style="width: 35%">
-            <select class="form-select" id="level" name="level">
-                <option value="">Search by level</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Beginner">Beginner</option>
-                <option value="Advanced">Advanced</option>
+            <select class="form-select" id="role" name="role">
+                <option value="">Search by role</option>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
             </select>
         </div>
 
@@ -46,51 +45,45 @@
 
     @* Add Button *@
     <button type="button" class="btn btn-primary" id="openAddModal" style="width:fit-content">
-        <i class="bi bi-plus"></i> Add New Course
+        <i class="bi bi-plus"></i> Add New Users
     </button>
 
 
     
 
-    @* Courses table *@
+    @* Students table *@
     <div class="d-flex flex-column align-items-center">
          <table class="table table-bordered table-striped bg-white">
              <thead>
             <tr>
                 <th>ID</th>
-                <th>Course</th>
-                <th>Description</th>
-                <th>Duration(H)</th>
-                <th>Instructor</th>
-                <th>Level</th>
-                <th>Fee($)</th>
-                <th>Enrolled Students</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Phone</th>
+                <th>Role</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
                 @if (Model !=null && Model.Any())
                 {
-                    @foreach (var courses in Model) {
+                    @foreach (var User in Model) {
                         <tr>
-                            <td>@courses.Course_Id</td>
-                            <td>@courses.Course</td>
-                            <td>@courses.Description</td>
-                            <td>@courses.Duration</td>
-                            <td>@courses.Instructor</td>
-                            <td>@courses.Level</td>
-                            <td>@courses.Fee</td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-link" onclick="loadEnrollmentMarks(@courses.Course_Id)">View</button>
-                            </td>
+                            <td>@User.User_Id</td>
+                            <td>@User.Name</td>
+                            <td>@User.Email</td>
+                            <td>@User.Password</td>
+                            <td>@User.Phone</td>
+                            <td>@User.Role</td>
                             <td class="text-center">
                                 <button type="button" 
                                         class="btn btn-primary m-1 openEditModal" 
-                                        data-id="@courses.Course_Id">
+                                        data-id="@User.User_Id">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <button type="button"  
-                                    data-id="@courses.Course_Id"
+                                    data-id="@User.User_Id"
                                     class="btn btn-danger openDeleteModal">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
@@ -100,13 +93,14 @@
                 } else 
                 {
                  <tr>
-                    <td colspan="11" class="text-center text-muted">No Course found.</td>
+                    <td colspan="11" class="text-center text-muted">No Student found.</td>
                  </tr>   
                 }
             </tbody>
+
         </table>
     
-        <nav aria-label="Courses Pagination">
+        <nav aria-label="Student Pagination">
             <ul class="pagination">
                 <li class="page-item @(ViewBag.Window == 1 ? "disabled" : "")">
                     <a class="page-link" 
@@ -114,7 +108,7 @@
                         asp-route-page="@((ViewBag.StartPage - 5) > 0 ? ViewBag.StartPage - 5 : 1)" 
                         asp-route-window="@(ViewBag.Window - 1)"
                         asp-route-search="@ViewBag.Search"
-                        asp-route-level="@ViewBag.Level">
+                        asp-route-role="@ViewBag.Role">
                         Previous
                     </a>
                 </li>
@@ -127,7 +121,7 @@
                             asp-route-page="@i"
                             asp-route-window="@ViewBag.Window"
                             asp-route-search="@ViewBag.Search"
-                            asp-route-level="@ViewBag.Level">
+                            asp-route-role="@ViewBag.Role">
                             @i
                         </a>
                     </li>
@@ -139,7 +133,7 @@
                         asp-route-page="@((ViewBag.EndPage + 1) <= ViewBag.TotalPages ? ViewBag.EndPage + 1 : ViewBag.TotalPages)" 
                         asp-route-window="@(ViewBag.Window + 1)"
                         asp-route-search="@ViewBag.Search"
-                        asp-route-level="@ViewBag.Level">
+                        asp-route-role="@ViewBag.Role">
                         Next
                     </a>
                 </li>
@@ -152,86 +146,8 @@
 
 
 
-
-    @* Enrolled in table *@
-    <div class="d-flex flex-column align-items-center">
-         <table class="table table-bordered table-striped bg-white">
-             <thead>
-            <tr>
-                <th>ID</th>
-                <th>Student Name</th>
-                <th>Enrollment ID</th>
-                <th>Mark</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody  id="enrollmentMarks">
-            </tbody>
-        </table>
-
-
-        <script>
-            function loadEnrollmentMarks(courseId) {
-                $.get('/Courses/View', { id: courseId }, function (data) {
-                    $('#enrollmentMarks').html(data);
-                        // Smooth scroll to the enrollmentMarks section
-                    $('html, body').animate({
-                        scrollTop: $('#enrollmentMarks').offset().top
-                    }, 600); // 600ms scroll duration
-                });
-            }
-        </script>
-    
-        <nav aria-label="...">
-            <ul class="pagination">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item active">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-
-
-
-    @* Courses demogarphics *@
-    <div class="d-flex flex-row justify-content-between">
-
-        <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
-            <i class="fs-4 bi-journal-text"></i> 
-            <div>Total Courses</div>
-            <div>@ViewBag.CoursesCount</div>
-        </div>
-
-        <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
-            <i class="fs-4 bi-clock"></i> 
-            <div>Total Course Hours</div>
-            <div>@ViewBag.CoursesHours</div>
-        </div>
-
-        <div class="bg-white d-flex flex-column align-items-center gap-3 p-3" style="width: 30%; border-radius: 5px;">
-            <i class="fs-4 bi-star-fill"></i> 
-            <div>Popular Course</div>
-            <div>
-                @ViewBag.MostPopularCourse
-            </div>
-        </div>
-
-    </div>
-
-
 </div>
+
 
 
 
@@ -246,7 +162,7 @@
         const container = document.getElementById("addModalContainer");
 
         button.addEventListener("click", function () {
-            fetch("/Courses/AddModal")
+            fetch("/Users/AddModal")
                 .then(response => response.text())
                 .then(html => {
                     container.innerHTML = html;
@@ -275,9 +191,9 @@
 
         buttons.forEach(button => {
             button.addEventListener("click", function () {
-                const courseId = this.getAttribute("data-id");
+                const userId = this.getAttribute("data-id");
 
-                fetch(`/Courses/EditModal?id=${courseId}`)
+                fetch(`/Users/EditModal?id=${userId}`)
                     .then(response => response.text())
                     .then(html => {
                         container.innerHTML = html;
@@ -306,9 +222,9 @@
 
         deleteButtons.forEach(button => {
             button.addEventListener("click", function () {
-                const studentId = this.getAttribute("data-id");
+                const userId = this.getAttribute("data-id");
 
-                fetch(`/Courses/DeleteModal?id=${studentId}`)
+                fetch(`/Users/DeleteModal?id=${userId}`)
                     .then(response => response.text())
                     .then(html => {
                         container.innerHTML = html;
@@ -325,43 +241,5 @@
         });
     });
 </script>
-
-
-
-
-@* Mark Modal *@
-<div id="addMarkModalContainer"></div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const container = document.getElementById("addMarkModalContainer");
-
-        // Delegate click event to dynamically loaded buttons
-        document.addEventListener("click", function (e) {
-            const button = e.target.closest(".openMarkModal");
-            if (button) {
-                const enrollmentId = button.getAttribute("data-id");
-
-                fetch(`/Courses/ViewMark?id=${enrollmentId}`)
-                    .then(response => response.text())
-                    .then(html => {
-                        container.innerHTML = html;
-                        const modal = document.getElementById("addModal");
-                        if (modal) {
-                            const modalInstance = new bootstrap.Modal(modal);
-                            modalInstance.show();
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error loading modal:", error);
-                    });
-            }
-        });
-    });
-</script>
-
-
-
-
 
 
