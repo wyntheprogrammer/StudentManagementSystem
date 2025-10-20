@@ -74,7 +74,9 @@
                     @foreach (var student in Model) {
                         <tr>
                             <td>@student.Student_Id</td>
-                            <td>@student.Image</td>
+                            <td style="width: 100px; height: 100px;">
+                                <img src = "~/Images/Student/@student.Image" style="width: 100%;"/>
+                            </td>
                             <td>@student.Name</td>
                             <td>@student.Birthday.ToString("MMMM dd, yyyy")</td>
                             <td>@student.Gender</td>

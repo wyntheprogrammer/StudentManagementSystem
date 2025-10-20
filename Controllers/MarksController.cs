@@ -103,13 +103,22 @@ namespace StudentManagementSystem.Controllers
                 return NotFound();
             }
 
+            if (int.TryParse(existingMark.Mark, out int numericMark))
+            {
+                existingMark.Status = numericMark >= 75 ? "Passed" : "Failed";
+            }
+            else
+            {
+                existingMark.Status = "Invalid";
+            }
+
+
             existingMark.Enrollment_Id = marks.Enrollment_Id;
             existingMark.Student_Id = marks.Student_Id;
             existingMark.Course_Id = marks.Course_Id;
             existingMark.Mark = marks.Mark;
-            existingMark.Status = marks.Status;
             existingMark.Remark = marks.Remark;
-            existingMark.Date = marks.Date;
+            existingMark.Date = DateTime.Today;
 
             _context.SaveChanges();
 

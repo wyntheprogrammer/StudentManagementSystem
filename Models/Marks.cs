@@ -13,7 +13,7 @@ namespace StudentManagementSystem.Models
         public int Enrollment_Id { get; set; }
         public int Course_Id { get; set; }
         public string Mark { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
         public string Remark { get; set; }
         public DateTime Date { get; set; }
 

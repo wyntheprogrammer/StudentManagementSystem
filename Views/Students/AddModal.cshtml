@@ -8,7 +8,7 @@
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="addForm" asp-action="AddStudent" method="post">
+            <form id="addForm" asp-action="AddStudent" method="post" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModalLabel">Add Student</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -16,35 +16,35 @@
                 <div class="modal-body d-flex flex-column gap-2">
                     <div class="form-group">
                         <label asp-for="Name"></label>
-                        <input type="text" asp-for="Name" class="form-control" />
+                        <input type="text" asp-for="Name" class="form-control" required/>
                     </div>
                     <div class="form-group">
                         <label asp-for="Birthday"></label>
-                        <input type="date" asp-for="Birthday" class="form-control" />
+                        <input type="date" asp-for="Birthday" class="form-control" required/>
                     </div>
                     <div class="form-group">
                         <label asp-for="Gender"></label>
-                        <select asp-for="Gender" class="form-select" id="gender" name="gender">
-                            <option value="">Search by gender</option>
+                        <select asp-for="Gender" class="form-select" id="gender" required>
+                            <option value="">Select gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label asp-for="Address"></label>
-                        <input type="text" asp-for="Address" class="form-control" />
+                        <input type="text" asp-for="Address" class="form-control" required/>
                     </div>
                     <div class="form-group">
                         <label asp-for="Phone"></label>
-                        <input type="text" asp-for="Phone" class="form-control" />
+                        <input type="text" asp-for="Phone" class="form-control" required/>
                     </div>
                     <div class="form-group">
                         <label asp-for="Email"></label>
-                        <input type="email" asp-for="Email" class="form-control" />
+                        <input type="email" asp-for="Email" class="form-control" required/>
                     </div>
                     <div class="form-group">
                         <label asp-for="Image"></label>
-                        <input type="file" asp-for="Image" class="form-control" />
+                        <input type="file" name="Image" class="form-control" />
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\StudentManagementSystem.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\Sample.png",
+      "PackagePath": "staticwebassets\\Images\\Student\\Sample.png"
+    },
+    {
+      "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\sample1.jpg",
+      "PackagePath": "staticwebassets\\Images\\Student\\sample1.jpg"
+    },
+    {
       "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

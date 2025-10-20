@@ -20,41 +20,63 @@
             <div class="row flex-nowrap">
                 <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                     <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+
+                        <a href="/" class="d-flex justify-content-center align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none w-100">
                             <span class="fs-5 d-none d-sm-inline">Student MS</span>
                         </a>
-                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                            <li class="nav-item">
-                                <a class="nav-link align-middle px-0 text-white" asp-area="" asp-controller="Dashboard" asp-action="Index">
-                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span>
+
+                        <ul class="nav w-100 h-100 d-flex flex-column flex-grow-1" id="menu">
+                            <li class="hover-bg-grey ps-2">
+                                <a class="nav-link px-0 text-white" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="fs-4 bi-house"></i> 
+                                    <span class="ms-1">Dashboard</span>
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Students" asp-action="Index">
-                                    <i class="fs-4 bi-person-badge"></i> <span class="ms-1 d-none d-sm-inline">Student</span>
+                            <li class="hover-bg-grey ps-2">
+                                <a class="nav-link px-0 text-white" asp-controller="Students" asp-action="Index">
+                                    <i class="fs-4 bi-person-badge"></i> <span class="ms-1">Student</span>
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Courses" asp-action="Index">
-                                    <i class="fs-4 bi-journal-bookmark"></i> <span class="ms-1 d-none d-sm-inline">Courses</span>
+                            <li class="hover-bg-grey ps-2">
+                                <a class="nav-link px-0 text-white" asp-controller="Courses" asp-action="Index">
+                                    <i class="fs-4 bi-journal-bookmark"></i> <span class="ms-1">Courses</span>
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Enrollments" asp-action="Index">
-                                    <i class="fs-4 bi-person-plus"></i> <span class="ms-1 d-none d-sm-inline">Enrollment</span>
+                            <li class="hover-bg-grey ps-2">
+                                <a class="nav-link px-0 text-white" asp-controller="Enrollments" asp-action="Index">
+                                    <i class="fs-4 bi-person-plus"></i> <span class="ms-1">Enrollment</span>
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Marks" asp-action="Index">
-                                    <i class="fs-4 bi-clipboard-data"></i> <span class="ms-1 d-none d-sm-inline">Marks</span>
+                            <li class="hover-bg-grey ps-2">
+                                <a class="nav-link px-0 text-white" asp-controller="Marks" asp-action="Index">
+                                    <i class="fs-4 bi-clipboard-data"></i> <span class="ms-1">Marks</span>
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link px-0 align-middle text-white"  asp-area="" asp-controller="Users" asp-action="Index">
-                                    <i class="fs-4 bi-people-fill"></i> <span class="ms-1 d-none d-sm-inline">Users</span>
+                           
+                           @{
+                                var role = Context.Session.GetString("UserRole");
+                            }
+
+                            @if (role == "Admin")
+                            {
+                                <li class="hover-bg-grey ps-2">
+                                    <a class="nav-link px-0 text-white" asp-controller="Users" asp-action="Index">
+                                        <i class="fs-4 bi-people-fill"></i> <span class="ms-1">Users</span>
+                                    </a>
+                                </li>
+                            }
+
+
+                            <!-- Logout pinned to bottom -->
+                            <li class="hover-bg-grey mt-auto mb-2 w-100 d-flex justify-content-center align-items-center">
+                                <a class="nav-link px-0 text-white" asp-controller="Account" asp-action="Logout">
+                                    <i class="fs-4 bi-box-arrow-left"></i> <span class="ms-1">Logout</span>
                                 </a>
                             </li>
+
+                            
                         </ul>
+                        
                     </div>
                 </div>
                 <div class="col py-3" style="background-color: #EAE8E7">
@@ -64,10 +86,6 @@
                 </div>
             </div>
         </div>
-
-
-        
-
     
     </div>
    

@@ -55,7 +55,7 @@ namespace StudentManagementSystem.Controllers
 
 
         ////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////// Student Search Modal ////////////////////////////////// 
+        ////////////////////////////////// Enrollment Search Modal ////////////////////////////////// 
         ////////////////////////////////////////////////////////////////////////////////////////
 
         [HttpGet]
@@ -136,6 +136,21 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEnrollment(Enrollments enrollment)
         {
+            // Check for existing active enrollment
+            bool alreadyEnrolled = _context.Enrollments.Any(e =>
+                e.Student_Id == enrollment.Student_Id &&
+                e.Course_Id == enrollment.Course_Id &&
+                e.Status == "Active"
+            );
+
+            if (alreadyEnrolled)
+            {
+                TempData["ErrorMessage"] = "Student is already actively enrolled in this course.";
+                return RedirectToAction("Search");
+            }
+
+            enrollment.Status = "Active";
+
             if (ModelState.IsValid)
             {
                 _context.Enrollments.Add(enrollment);
@@ -145,11 +160,12 @@ namespace StudentManagementSystem.Controllers
                 return RedirectToAction("Search");
             }
 
-            // TempData["ErrorMessage"] = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-            TempData["ErrorMessage"] = string.Join(" | ", ModelState.Select(kvp => $"{kvp.Key}: {string.Join(", ", kvp.Value.Errors.Select(e => e.ErrorMessage))}"));
+            TempData["ErrorMessage"] = string.Join(" | ", ModelState.Select(kvp =>
+                $"{kvp.Key}: {string.Join(", ", kvp.Value.Errors.Select(e => e.ErrorMessage))}"));
 
             return RedirectToAction("Search");
         }
+
 
 
 
@@ -211,7 +227,7 @@ namespace StudentManagementSystem.Controllers
 
 
         ////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////// Student Delete Modal ////////////////////////////////// 
+        ////////////////////////////////// Enrollment Delete Modal ////////////////////////////////// 
         ////////////////////////////////////////////////////////////////////////////////////////
         [HttpGet]
         public IActionResult DeleteModal(int id)

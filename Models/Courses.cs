@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace StudentManagementSystem.Models
 {
@@ -15,7 +16,9 @@ namespace StudentManagementSystem.Models
         public string Level { get; set; }
         public string Fee { get; set; }
 
+        [ValidateNever]
         public ICollection<Enrollments> Enrollments { get; set; } // Optional reverse navigation
+        [ValidateNever]
         public ICollection<Marks> Marks { get; set; } // Optional reverse navigation
 
 

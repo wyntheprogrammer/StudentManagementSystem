@@ -45,6 +45,14 @@ Password
 Phone Number
 User Role
 
+CREATE TABLE Users (
+	User_ID INTEGER PRIMARY KEY,
+	Name TEXT,
+	Email TEXT,
+	Password TEXT,
+	Phone TEXT,
+	Role
+)
 
 
 

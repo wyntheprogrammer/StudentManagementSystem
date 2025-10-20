@@ -17,6 +17,20 @@ a {
   border-color: #1861ac;
 }
 
+.hover-bg-grey:hover {
+  background-color: #EAE8E7;
+  color: black !important;
+  border-radius: 5px;
+}
+
+.hover-bg-grey:hover a span,
+.hover-bg-grey:hover a i {
+  transition: all 0.3s ease;
+  transform: scale(1.05); /* Slightly enlarge */
+  color: black !important;
+}
+
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;

@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.VisualBasic;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 
 namespace StudentManagementSystem.Models
 {
@@ -9,6 +11,7 @@ namespace StudentManagementSystem.Models
     {
         [Key]
         public int Student_Id { get; set; }
+        [ValidateNever]
         public string Image { get; set; }
         public string Name { get; set; }
 
@@ -19,7 +22,9 @@ namespace StudentManagementSystem.Models
         public string Phone { get; set; }
         public string Email { get; set; }
 
+        [ValidateNever]
         public ICollection<Enrollments> Enrollments { get; set; } // Optional reverse navigation
+        [ValidateNever]
         public ICollection<Marks> Marks { get; set; } // Optional reverse navigation
     }
 }

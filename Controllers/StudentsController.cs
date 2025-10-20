@@ -146,10 +146,26 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddStudent(Student student)
+        public async Task<IActionResult> AddStudent(Student student, IFormFile Image)
         {
             if (ModelState.IsValid)
             {
+                if (Image != null && Image.Length > 0)
+                {
+                    // Define the path to save the image
+                    var uniqueFileName = student.Name + DateTime.Now.ToString("_yyyyMMddHHmmssfff") + Path.GetExtension(Image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/Student", uniqueFileName);
+
+                    // Save the file
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(stream);
+                    }
+
+                    // Save the filename to the student record
+                    student.Image = uniqueFileName;
+                }
+
                 _context.Students.Add(student);
                 await _context.SaveChangesAsync();
 
@@ -157,7 +173,12 @@ namespace StudentManagementSystem.Controllers
                 return RedirectToAction("Search");
             }
 
-            TempData["ErrorMessage"] = "Failed to add student. Please check the form for errors.";
+            var errorMessages = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            TempData["ErrorMessage"] = string.Join(" | ", errorMessages);
             return RedirectToAction("Search");
         }
 
@@ -181,7 +202,7 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpPost]
-        public IActionResult EditStudent(Student student)
+        public async Task<IActionResult> EditStudent(Student student, IFormFile Image)
         {
             var existingStudent = _context.Students.FirstOrDefault(s => s.Student_Id == student.Student_Id);
             if (existingStudent == null)
@@ -190,13 +211,28 @@ namespace StudentManagementSystem.Controllers
                 return NotFound();
             }
 
+            if (Image != null && Image.Length > 0)
+            {
+                // Define the path to save the image
+                var uniqueFileName = student.Name + DateTime.Now.ToString("_yyyyMMddHHmmssfff") + Path.GetExtension(Image.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/Student", uniqueFileName);
+
+                // Save the file
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await Image.CopyToAsync(stream);
+                }
+
+                // Save the filename to the student record
+                existingStudent.Image = uniqueFileName;
+            }
+
             existingStudent.Name = student.Name;
             existingStudent.Birthday = student.Birthday;
             existingStudent.Gender = student.Gender;
             existingStudent.Address = student.Address;
             existingStudent.Phone = student.Phone;
             existingStudent.Email = student.Email;
-            existingStudent.Image = student.Image;
 
             _context.SaveChanges();
 
@@ -326,6 +362,17 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMark(Marks marks)
         {
+            if (int.TryParse(marks.Mark, out int numericMark))
+            {
+                marks.Status = numericMark >= 75 ? "Passed" : "Failed";
+            }
+            else
+            {
+                marks.Status = "Invalid"; // fallback if parsing fails
+            }
+
+            marks.Date = DateTime.Today;
+
             if (ModelState.IsValid)
             {
                 _context.Marks.Add(marks);
@@ -335,9 +382,16 @@ namespace StudentManagementSystem.Controllers
                 return RedirectToAction("Search");
             }
 
-            TempData["ErrorMessage"] = "Failed to add student. Please check the form for errors.";
+            var errorMessages = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            TempData["ErrorMessage"] = string.Join(" | ", errorMessages);
+            
             return RedirectToAction("Search");
         }
+
 
     }
 }

@@ -17,6 +17,20 @@ a[b-kqem6kkl2p] {
   border-color: #1861ac;
 }
 
+.hover-bg-grey:hover[b-kqem6kkl2p] {
+  background-color: #EAE8E7;
+  color: black !important;
+  border-radius: 5px;
+}
+
+.hover-bg-grey:hover a span[b-kqem6kkl2p],
+.hover-bg-grey:hover a i[b-kqem6kkl2p] {
+  transition: all 0.3s ease;
+  transform: scale(1.05); /* Slightly enlarge */
+  color: black !important;
+}
+
+
 .nav-pills .nav-link.active[b-kqem6kkl2p], .nav-pills .show > .nav-link[b-kqem6kkl2p] {
   color: #fff;
   background-color: #1b6ec2;

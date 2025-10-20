@@ -15,10 +15,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column gap-2">
-                    <div class="form-group">
-                        <label asp-for="Enrollment_Id"></label>
-                        <input type="text" asp-for="Enrollment_Id" class="form-control" />
-                    </div>
+                    <input type="hidden" asp-for="Enrollment_Id" class="form-control" />
                     <div class="form-group">
                         <label for="Name">Name</label>
                         <input type="hidden" asp-for="Student_Id" />
@@ -31,19 +28,11 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Mark"></label>
-                        <input type="text" asp-for="Mark" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Status"></label>
-                        <input type="text" asp-for="Status" class="form-control" />
+                        <input type="number" asp-for="Mark" class="form-control" required/>
                     </div>
                     <div class="form-group">
                         <label asp-for="Remark"></label>
-                        <input type="text" asp-for="Remark" class="form-control" />
-                    </div>
-                     <div class="form-group">
-                        <label asp-for="Date"></label>
-                        <input type="date" asp-for="Date" class="form-control" />
+                        <input type="text" asp-for="Remark" class="form-control" required/>
                     </div>
                 </div>
                 <div class="modal-footer">

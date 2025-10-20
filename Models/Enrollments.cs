@@ -15,7 +15,7 @@ namespace StudentManagementSystem.Models
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Enrollment_date { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
 
         [ForeignKey("Student_Id")]
         [ValidateNever]

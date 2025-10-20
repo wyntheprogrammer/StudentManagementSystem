@@ -21,7 +21,7 @@ namespace StudentManagementSystem.Controllers
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////// Student Demograpics Modal /////////////////////////////
+        ////////////////////////////////// Courses Demograpics Modal /////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
 
         private void TotalCourses()
@@ -134,14 +134,21 @@ namespace StudentManagementSystem.Controllers
                 return RedirectToAction("Search");
             }
 
-            TempData["FailedMessage"] = "Failed to add student. Please check the form for errors.";
+            
+
+            var errorMessages = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            TempData["ErrorMessage"] = string.Join(" | ", errorMessages);
             return RedirectToAction("Search");
         }
 
 
 
         ////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////// Student Edit Modal ////////////////////////////////// 
+        ////////////////////////////////// Courses Edit Modal ////////////////////////////////// 
         ////////////////////////////////////////////////////////////////////////////////////////
         [HttpGet]
         public IActionResult EditModal(int id)
@@ -284,6 +291,17 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMark(Marks marks)
         {
+            if (int.TryParse(marks.Mark, out int numericMark))
+            {
+                marks.Status = numericMark >= 75 ? "Passed" : "Failed";
+            }
+            else
+            {
+                marks.Status = "Invalid"; // fallback if parsing fails
+            }
+
+            marks.Date = DateTime.Today;
+
             if (ModelState.IsValid)
             {
                 _context.Marks.Add(marks);
@@ -293,7 +311,13 @@ namespace StudentManagementSystem.Controllers
                 return RedirectToAction("Search");
             }
 
-            TempData["ErrorMessage"] = "Failed to add student. Please check the form for errors.";
+            var errorMessages = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            TempData["ErrorMessage"] = string.Join(" | ", errorMessages);
+            
             return RedirectToAction("Search");
         }
 
