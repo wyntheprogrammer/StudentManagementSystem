@@ -5,12 +5,40 @@
       "PackagePath": "staticwebassets\\StudentManagementSystem.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\20251020161333358.png",
+      "PackagePath": "staticwebassets\\Images\\Student\\20251020161333358.png"
+    },
+    {
+      "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\Arisu Santos20251020161438609.png",
+      "PackagePath": "staticwebassets\\Images\\Student\\Arisu Santos20251020161438609.png"
+    },
+    {
+      "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\Arisu Santos_20251020161513674.png",
+      "PackagePath": "staticwebassets\\Images\\Student\\Arisu Santos_20251020161513674.png"
+    },
+    {
+      "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\Arisu Santos_20251020161700743.png",
+      "PackagePath": "staticwebassets\\Images\\Student\\Arisu Santos_20251020161700743.png"
+    },
+    {
       "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\Sample.png",
       "PackagePath": "staticwebassets\\Images\\Student\\Sample.png"
     },
     {
+      "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\Sample2.png",
+      "PackagePath": "staticwebassets\\Images\\Student\\Sample2.png"
+    },
+    {
+      "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\hanna_20251020161818062.png",
+      "PackagePath": "staticwebassets\\Images\\Student\\hanna_20251020161818062.png"
+    },
+    {
       "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\Student\\sample1.jpg",
       "PackagePath": "staticwebassets\\Images\\Student\\sample1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\Images\\schoolbg.jpg",
+      "PackagePath": "staticwebassets\\Images\\schoolbg.jpg"
     },
     {
       "Id": "C:\\Users\\JPBACOLOD\\StudentManagementSystem\\wwwroot\\css\\site.css",

@@ -12,10 +12,11 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/StudentManagementSystem.styles.css" asp-append-version="true" />
 </head>
-<body class="d-flex flex-column justify-content-center align-items-center bg-dark" style="height: 100vh">
+<body class="d-flex flex-column justify-content-center align-items-center position-relative" style="height: 100vh; background-image: url('/Images/schoolbg.jpg'); background-size: cover; background-position: center;">
 
-    <div class="w-25 d-flex flex-column gap-3 bg-white p-5" style="border-radius:5px">
-        <h2>Login Page</h2>
+    <div class="overlay"></div>
+
+    <div class="w-25 d-flex flex-column gap-3 bg-white p-5" style="border-radius:5px; z-index: 2; position: relative;">        <h2>Login Page</h2>
 
         @if (TempData["SuccessMessage"] != null)
         {

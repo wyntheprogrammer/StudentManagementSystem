@@ -17,6 +17,7 @@ a {
   border-color: #1861ac;
 }
 
+
 .hover-bg-grey:hover {
   background-color: #EAE8E7;
   color: black !important;
@@ -28,6 +29,20 @@ a {
   transition: all 0.3s ease;
   transform: scale(1.05); /* Slightly enlarge */
   color: black !important;
+}
+
+
+.hover-bg-red:hover {
+  background-color: #EAE8E7;
+  color: red !important;
+  border-radius: 5px;
+}
+
+.hover-bg-red:hover a span,
+.hover-bg-red:hover a i {
+  transition: all 0.3s ease;
+  transform: scale(1.05); /* Slightly enlarge */
+  color: red !important;
 }
 
 

@@ -17,6 +17,7 @@ a[b-kqem6kkl2p] {
   border-color: #1861ac;
 }
 
+
 .hover-bg-grey:hover[b-kqem6kkl2p] {
   background-color: #EAE8E7;
   color: black !important;
@@ -28,6 +29,20 @@ a[b-kqem6kkl2p] {
   transition: all 0.3s ease;
   transform: scale(1.05); /* Slightly enlarge */
   color: black !important;
+}
+
+
+.hover-bg-red:hover[b-kqem6kkl2p] {
+  background-color: #EAE8E7;
+  color: red !important;
+  border-radius: 5px;
+}
+
+.hover-bg-red:hover a span[b-kqem6kkl2p],
+.hover-bg-red:hover a i[b-kqem6kkl2p] {
+  transition: all 0.3s ease;
+  transform: scale(1.05); /* Slightly enlarge */
+  color: red !important;
 }
 
 
